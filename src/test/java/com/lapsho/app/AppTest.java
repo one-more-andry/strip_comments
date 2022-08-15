@@ -46,10 +46,10 @@ public class AppTest
     }
 
     @Test
-    public void stripComments_OnlyNewLineCharStringInput_ShouldReturnOriginalString() {
+    public void stripComments_TwoNewLineCharStringInput_ShouldReturnOneNewLineString() {
         assertEquals(
                 "not original string returned",
-                "\n\n",
+                "\n",
                 App.stripComments( "\n\n", new String[] { "#", "!" } )
         );
     }
@@ -75,17 +75,13 @@ public class AppTest
     }
 
     @Test
-    public void stripComments_SymbolCharsWithRegularString_ShouldStripBySymbolChars() {
-        assertEquals(
-                "failed to strip by # and !",
-                "apples, pears\ngrapes\nbananas",
-                App.stripComments( "apples, pears # and bananas\ngrapes\nbananas !apples", new String[] { "#", "!" } )
-        );
+    public void stripComments_SymbolCharsAsStrip_ShouldStripBySymbolChars() {
+        String[] strip = new String[] { "#", "!", "@" };
 
         assertEquals(
-                "failed to strip by # and $: ",
-                "a\nc\nd",
-                App.stripComments( "a #b\nc\nd $e f g", new String[] { "#", "$" } )
+                "failed to strip by " + String.join(", ", strip),
+                "apples, pears \ngrapes\nbananas \n apples",
+                App.stripComments( "apples, pears # and bananas\ngrapes\nbananas !apples\n apples@ glue", strip)
         );
     }
 
@@ -106,7 +102,7 @@ public class AppTest
     @Test
     public void stripComments_ByWords_ShouldStripByWords() {
         String inputString = "one two three \n four five six seven \n one \ntwo",
-                outputString = "one \n four five \n \n";
+                outputString ="one \n four five \n one \n";
         String[] words = new String[]
                 { "two", "six" };
 
@@ -118,26 +114,24 @@ public class AppTest
     }
 
     @Test
-    public void stripComments_CharAtBeginningAndNewLineAsStripChar_ReturnOnlyChar() {
-        String inputString = "o\ntwo three \n four five six seven \n one \ntwo",
-                outputString = "o";
+    public void stripComments_CharAtBeginningAndNewLineAsStripChar_IgnoreNewLineAsStripChar() {
+        String inputString = "o\ntwo three \n four five six seven \n one \ntwo";
         String[] strip = new String[] { "\n" };
 
         assertEquals(
                 "failed to strip by newline",
-                outputString, App.stripComments( inputString, strip )
+                inputString, App.stripComments( inputString, strip )
         );
     }
 
     @Test
-    public void stripComments_NewLineAtBeginningAndNewLineAsStripChar_ReturnEmptyLine() {
-        String inputString = "\n test \n one \ntwo",
-                outputString = "";
+    public void stripComments_NewLineAtBeginningAndNewLineAsStripChar_IgnoreNewLineAsStripChar() {
+        String inputString = "\n test \n one \ntwo";
         String[] strip = new String[] { "\n"};
 
         assertEquals(
                 "failed to strip by newline",
-                outputString, App.stripComments( inputString, strip )
+                inputString, App.stripComments( inputString, strip )
         );
     }
 
