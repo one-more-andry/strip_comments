@@ -58,7 +58,7 @@ public class AppTest
     public void stripComments_SingleAndDoubleQuotesInput_ShouldStripByBothQuotesType() {
         assertEquals(
                 "failed to strip by single and double quotes",
-                "before single quote \n before double quotes ",
+                "before single quote\n before double quotes",
                 App.stripComments( "before single quote ' text to ignore\n before double quotes \" text to ignore",
                         new String[] { "'", "\"" } )
         );
@@ -75,12 +75,12 @@ public class AppTest
     }
 
     @Test
-    public void stripComments_SymbolCharsAsStrip_ShouldStripBySymbolChars() {
+    public void stripComments_SpaceBeforeStripChar_ShouldBeStripped() {
         String[] strip = new String[] { "#", "!", "@" };
 
         assertEquals(
                 "failed to strip by " + String.join(", ", strip),
-                "apples, pears \ngrapes\nbananas \n apples",
+                "apples, pears\ngrapes\nbananas\n apples",
                 App.stripComments( "apples, pears # and bananas\ngrapes\nbananas !apples\n apples@ glue", strip)
         );
     }
@@ -88,7 +88,7 @@ public class AppTest
     @Test
     public void stripComments_RegexSpecialChars_ShouldStripBySpecialChars() {
         String inputString = "less <ignore \nparentheses open (ignore \nbrackets open [ignore \ncurly open {ignore \nbackslash \\ignore \ncaret ^ignore \nminus -ignore \nplus +ignore \nequal =ignore \ndollar $ignore \nexclamation !ignore \nor |ignore \nbracket close ]ignore \ncurly close}ignore \nparentheses close )ignore \nquestion ?ignore \nasterisk *ignore \ndot .ignore \nmore >ignore",
-                outputString = "less \nparentheses open \nbrackets open \ncurly open \nbackslash \ncaret \nminus \nplus \nequal \ndollar \nexclamation \nor \nbracket close \ncurly close\nparentheses close \nquestion \nasterisk \ndot \nmore ";
+                outputString = "less\nparentheses open\nbrackets open\ncurly open\nbackslash\ncaret\nminus\nplus\nequal\ndollar\nexclamation\nor\nbracket close\ncurly close\nparentheses close\nquestion\nasterisk\ndot\nmore";
         String[] regexSpecialChars = new String[]
                 { "<", "(", "[", "{", "\\", "^", "-", "=", "$", "!", "|", "]", "}", ")", "?", "*", "+", ".", ">" };
 
@@ -102,7 +102,7 @@ public class AppTest
     @Test
     public void stripComments_ByWords_ShouldStripByWords() {
         String inputString = "one two three \n four five six seven \n one \ntwo",
-                outputString ="one \n four five \n one \n";
+                outputString ="one\n four five\n one\n";
         String[] words = new String[]
                 { "two", "six" };
 
@@ -116,22 +116,24 @@ public class AppTest
     @Test
     public void stripComments_CharAtBeginningAndNewLineAsStripChar_IgnoreNewLineAsStripChar() {
         String inputString = "o\ntwo three \n four five six seven \n one \ntwo";
+        String outputString = "o\ntwo three\n four five six seven\n one\ntwo";
         String[] strip = new String[] { "\n" };
 
         assertEquals(
                 "failed to strip by newline",
-                inputString, App.stripComments( inputString, strip )
+                outputString, App.stripComments( inputString, strip )
         );
     }
 
     @Test
     public void stripComments_NewLineAtBeginningAndNewLineAsStripChar_IgnoreNewLineAsStripChar() {
         String inputString = "\n test \n one \ntwo";
+        String outputString = "\n test\n one\ntwo";
         String[] strip = new String[] { "\n"};
 
         assertEquals(
                 "failed to strip by newline",
-                inputString, App.stripComments( inputString, strip )
+                outputString, App.stripComments( inputString, strip )
         );
     }
 
